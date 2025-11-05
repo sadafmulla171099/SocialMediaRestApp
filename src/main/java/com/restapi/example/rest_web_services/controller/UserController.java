@@ -1,10 +1,19 @@
 package com.restapi.example.rest_web_services.controller;
 
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.restapi.example.rest_web_services.DAOService.UserDaoService;
 import com.restapi.example.rest_web_services.model.User;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,5 +37,11 @@ public class UserController {
     @PostMapping("/createUser")
     public void createUser(@RequestBody User user){
         userDaoService.saveUser(user);
+        URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(user.getId())
+				.toUri();
+        ResponseEntity.created(location).build();
     }
 }
