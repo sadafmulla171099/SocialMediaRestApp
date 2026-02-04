@@ -1,12 +1,14 @@
 package com.restapi.example.rest_web_services.DAOService;
 
-import com.restapi.example.rest_web_services.exception.UserNotFoundException;
-import com.restapi.example.rest_web_services.model.User;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
+import org.springframework.stereotype.Component;
+
+import com.restapi.example.rest_web_services.exception.UserNotFoundException;
+import com.restapi.example.rest_web_services.model.User;
 
 @Component
 public class UserDaoService {
@@ -31,6 +33,12 @@ public class UserDaoService {
                 .findFirst()
                 .orElseThrow(() -> new UserNotFoundException("User with ID: "+id+" Not Found"));
     }
+    
+    public void deleteById(int id){
+		Predicate<? super User> predicate = user -> user.getId() == id;
+		users.removeIf(predicate);
+		
+	}
 
     public User saveUser(User user){
         user.setId(++usersCount);

@@ -1,10 +1,16 @@
 package com.restapi.example.rest_web_services.model;
 
 import java.time.LocalDate;
-import java.util.Date;
+
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 public class User {
     private int id;
+    @Size(min=2, message="Name should have at least 2 characters")
+    private String name;
+    @Past(message="Date of Birth should be in the past")
+    private LocalDate dateOfBirth;
 
     public void setId(int id) {
         this.id = id;
@@ -17,8 +23,6 @@ public class User {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-    private String name;
 
     public String getName() {
         return name;
@@ -36,8 +40,6 @@ public class User {
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
     }
-
-    private LocalDate dateOfBirth;
 
     public User(int id, String name, LocalDate dateOfBirth) {
         this.id = id;
